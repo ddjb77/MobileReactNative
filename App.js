@@ -1,21 +1,69 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { Switch, Paper, Grid, Typography } from "@material-ui/core/";
+import { View, StyleSheet, Text } from "react-native";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 
-export default function App() {
+function App() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      type: darkMode ? "dark" : "light",
+    },
+
+    typography: {
+      fontSize: darkMode ? "20" : "16",
+    },
+  });
+
+  //const trocaFont = {};
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider theme={theme}>
+      <Paper style={{ height: "100vh" }}>
+        <Grid alignItems="center"></Grid>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <Typography variant="h6">Modo</Typography>
+          <Switch
+            checked={darkMode}
+            onChange={() => setDarkMode(!darkMode)}
+          ></Switch>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6">Fonte</Typography>
+          <Switch
+            checked={darkMode}
+            onChange={() => setDarkMode(!darkMode)}
+          ></Switch>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            margin: 200,
+          }}
+        >
+          <Typography>
+            "A vingança nunca é plena mata a alma, e a envenena"
+          </Typography>
+        </View>
+      </Paper>
+    </ThemeProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
