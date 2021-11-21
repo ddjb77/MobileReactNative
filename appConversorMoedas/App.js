@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   entrada: {
     width: 300,
-    backgroundColor: '#ddd',
+    backgroundColor: '#fc2',
     borderRadius: 10,
     fontSize: 20,
     marginLeft: 25
