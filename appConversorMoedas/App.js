@@ -1,112 +1,182 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, { Component } from 'react';
+import { View, StyleSheet, Text, Switch, TextInput, ScrollView, Pressable } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.converter.bind
+    this.state = {
+      entrada: 'Real',
+      saida: 'Dolar', 
+      result: 0,
+      valor:0,
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    };
   };
+  converter(){
+    if(this.state.entrada == "Dolar" && this.state.saida == "Real"){
+      this.setState({
+        result: this.state.valor * 5.29
+      })
+    }
+    else if(this.state.entrada == "Real" && this.state.saida == "Dolar"){
+      this.setState({
+        result:  this.state.valor / 5.29
+      })
+    }
+    else if(this.state.entrada == "Euro" && this.state.saida == "Real"){
+      this.setState({
+        result:  this.state.valor * 6.20 
+      })
+    }
+    else if(this.state.entrada == "Real" && this.state.saida == "Euro"){
+      this.setState({
+        result:  this.state.valor / 6.20 
+      })
+    }
+    else if(this.state.entrada == "Euro" && this.state.saida == "Dolar"){
+      this.setState({
+        result:  this.state.valor * 1.17 
+      })
+    }
+    else if(this.state.entrada == "Dolar" && this.state.saida == "Euro"){
+      this.setState({
+        result:  this.state.valor / 1.17 
+      })
+    }
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+  }
+
+  render() {
+
+    return (
+      <ScrollView>
+
+        <View style={styles.container}>
+
+          <Text style={styles.header}>Conversor de Moedas, Real, Dolar e Euro</Text>
+        
+
+          <View style={styles.boxCont}>
+            <Text style={styles.h1}>Valor: </Text>
+            <TextInput
+              style={styles.inputTexto}
+              keyboardType="numeric"
+              onChangeText={(texto) => this.setState({ valor: texto })}
+            />
+          </View>
+
+          <View style={styles.boxCont}>
+            <Text style={styles.h1}>De: </Text>
+            <Picker
+              style={{
+                marginLeft: 30
+              }
+              }
+              selectedValue={this.state.entrada}
+              //onChangeText={(texto) => this.setState({ sexo: texto })}
+              onValueChange={(itemValue, itemIndex) => this.setState({ entrada: itemValue })}
+            >
+              <Picker.Item key={1} value={"Real"} label="Real" style={styles.h2} />
+              <Picker.Item key={2} value={"Dolar"} label="Dolar" style={styles.h2} />
+              <Picker.Item key={3} value={"Euro"} label="Euro" style={styles.h2} />
+            </Picker>
+
+          </View>
+
+
+          <View style={styles.boxCont}>
+            <Text style={styles.h1}>Para: </Text>
+            <Picker style={{
+              marginLeft: 30
+            }
+            }
+              selectedValue={this.state.saida}
+
+              onValueChange={(itemValue, itemIndex) => this.setState({ saida: itemValue })}
+            >
+              
+              <Picker.Item key={1} value={"Real"} label="Real" style={styles.h2} />
+              <Picker.Item key={2} value={"Dolar"} label="Dolar" style={styles.h2} />
+              <Picker.Item key={3} value={"Euro"} label="Euro" style={styles.h2} />
+            </Picker>
+          </View>
+
+
         </View>
+
+        <Pressable
+          style={styles.botao}
+          onPress={() => this.converter()}
+        >
+          <Text style={styles.textoBtn}>Converter</Text>
+        </Pressable>
+        <Text style={styles.header}> Resultado da conversão </Text>
+        <Text style={styles.header}>{this.state.result}</Text>
+
       </ScrollView>
-    </SafeAreaView>
-  );
-};
+
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    marginTop: 15,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  entrada: {
+    width: 300,
+    backgroundColor: '#ddd',
+    borderRadius: 10,
+    fontSize: 20,
+    marginLeft: 25
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  h1: {
+    fontSize: 20,
+    margin: 5,
 
-export default App;
+  },
+  h2: {
+    fontSize: 20,
+    margin: 20,
+    marginLeft: 30
+  },
+  h3: {
+    fontSize: 18,
+    margin: 20,
+    marginLeft: 100
+  },
+  botao: {
+    backgroundColor: '#876404',
+    color: 'white',
+    width: 150,
+    textAlign: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 120,
+    marginBottom: 30,
+    marginTop: 50
+  },
+  textoBtn: {
+    color: 'white',
+    width: 150,
+    textAlign: 'center',
+    fontSize: 25
+  },
+  boxCont: {
+    backgroundColor: "#e3e3e3",
+    borderRadius: 10,
+    margin: 10,
+    padding: 20
+  },
+  header: {
+    fontSize: 35,
+    textAlign: 'center',
+    margin: 5
+  },
+  inputTexto: {
+    backgroundColor: '#fff'
+  }
+});
